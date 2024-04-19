@@ -228,25 +228,25 @@ df = pd.read_csv('data.csv')
 # Quant no. 31607   AI 2202
 # One Company contains several funds with the same prospectus, so funds share one dummy variable under the same firm
 value_vars = [str(i) for i in range(23)]
-quantSQ = df.melt(id_vars=['quant_dummy'], value_vars=value_vars, value_name='search_code')
-mask1 = quantSQ['search_code'].apply(lambda x: (isinstance(x, int) or isinstance(x, float) or (isinstance(x, str) and len(x) <= 4)))
-quantSQ2 = quantSQ[~mask1]
-quantSQ2.dropna()
+quant_sq = df.melt(id_vars=['quant_dummy'], value_vars=value_vars, value_name='search_code')
+mask1 = quant_sq['search_code'].apply(lambda x: (isinstance(x, int) or isinstance(x, float) or (isinstance(x, str) and len(x) <= 4)))
+quant_sq2 = quant_sq[~mask1]
+quant_sq2.dropna()
 # Keep those with dummy "1"
-quantSQ2.to_csv('quantSQ2.csv')
+quant_sq2.to_csv('quant_sq2.csv')
 
 # Do the same to generate quant dummy variables
-AISQ = df.melt(id_vars=['AI_dummy'], value_vars=value_vars, value_name='search_code')
-mask2 = AISQ['search_code'].apply(lambda x: (isinstance(x, int) or isinstance(x, float) or (isinstance(x, str) and len(x) <= 4)))
-AISQ2 = AISQ[~mask2]
-AISQ2.dropna()
+ai_sq = df.melt(id_vars=['AI_dummy'], value_vars=value_vars, value_name='search_code')
+mask2 = ai_sq['search_code'].apply(lambda x: (isinstance(x, int) or isinstance(x, float) or (isinstance(x, str) and len(x) <= 4)))
+ai_sq2 = ai_sq[~mask2]
+ai_sq2.dropna()
 
-AISQ2.to_csv('AISQ2.csv')
+ai_sq2.to_csv('ai_sq2.csv')
 
 # Step 2 Merge data
 # Use the search code to merge dummies with returns of the fund
-Quant_SC = pd.read_csv('search_code_quant.csv')
-AI_SC = pd.read_csv('search_code_AI.csv')
+quant_sc = pd.read_csv('search_code_quant.csv')
+ai_sc = pd.read_csv('search_code_AI.csv')
 ret = pd.read_csv('ret.csv')
 # Merge the quant and AI dummy data
 ret['quant_dummy'] = ret['search_code'].isin(search_code['isQuant']).astype(int)
